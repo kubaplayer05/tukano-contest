@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "../styles/globals.css";
+import {TooltipProvider} from "@/components/ui/tooltip";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -18,7 +19,9 @@ export default function RootLayout({
         <html lang="en">
         {/* <a href="http://www.freepik.com">Designed by Freepik</a> */}
         <body className={inter.className}>
-        {children}
+        <TooltipProvider>
+            {children}
+        </TooltipProvider>
         </body>
         </html>
     );

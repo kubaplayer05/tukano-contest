@@ -25,13 +25,36 @@ export default function AddEdgeDialog({open, setOpen}: AddEdgeDialogProps) {
 
     const [selectedAction, setSelectedAction] = useAtom(selectedActionAtom)
     const [graph, setGraph] = useAtom(graphAtom)
-    const {register, handleSubmit, control} = useForm<Inputs>()
+    const {register, handleSubmit, control, formState, setError} = useForm<Inputs>()
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+
+        if (data.from === data.to) {
+            return setError("root", {type: "custom", message: "'from' and 'to' nodes are the same"})
+        }
+
+        if (graph.edges.find(edge => edge.from === data.from && edge.to === data.to)) {
+
+            setGraph(prev => {
+                const edges = prev.edges.filter(
+                    edge => (edge.from !== data.from || edge.to !== data.to) && (edge.from !== data.to || edge.to !== data.from))
+
+                const edge: Edge = {...data}
+                const reversedEdge: Edge = {from: data.to, to: data.from, weight: data.weight}
+
+                return new Graph(prev.nodes, [...edges, edge, reversedEdge])
+            })
+
+            setSelectedAction(null)
+            setOpen(false)
+            return
+        }
+
         const edge: Edge = {...data}
+        const reversedEdge: Edge = {from: data.to, to: data.from, weight: data.weight}
 
         setGraph(prev => {
-            const edges = [...prev.edges, edge]
+            const edges = [...prev.edges, edge, reversedEdge]
             return new Graph(prev.nodes, edges)
         })
 
@@ -40,7 +63,7 @@ export default function AddEdgeDialog({open, setOpen}: AddEdgeDialogProps) {
     }
 
     const content = <>
-        <div className="grid w-full items-center gap-3 py-2">
+        <div className="grid w-full items-center gap-3 py-2 pt-4">
             <Label htmlFor="edge-from">Edge from Node:</Label>
             <Controller control={control} rules={{required: true}} render={({field}) => {
                 return (<Select onValueChange={field.onChange} {...field}>
@@ -84,6 +107,7 @@ export default function AddEdgeDialog({open, setOpen}: AddEdgeDialogProps) {
                    id="edge-weight" type="number"
                    placeholder="Enter edge weight" {...register("weight", {required: true})}/>
         </div>
+        {formState.errors.root && <p className="font-semibold text-red-700">{formState.errors.root.message}</p>}
     </>
 
     return (

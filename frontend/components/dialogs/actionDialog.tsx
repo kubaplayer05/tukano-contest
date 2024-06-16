@@ -23,7 +23,7 @@ export default function ActionDialog({open, setOpen, content, onSubmit, title, s
                         <DialogTitle>{title}</DialogTitle>
                     </DialogHeader>
                     {content}
-                    <DialogFooter>
+                    <DialogFooter className="py-2">
                         <DialogClose asChild>
                             <Button type="button" variant="secondary"
                                     className="bg-red-700 border-2 border-red-900 text-white hover:bg-red-800">Close</Button>

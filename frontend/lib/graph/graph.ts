@@ -5,6 +5,7 @@ export interface Node {
 }
 
 export interface Edge {
+    isActive?: boolean
     from: string,
     to: string,
     weight: number
@@ -21,9 +22,26 @@ export class Graph {
     public nodes: Node[];
     public edges: Edge[];
 
+    private nodeRadius = 25
+
     constructor(nodes: Node[], edges: Edge[]) {
         this.nodes = nodes
         this.edges = edges
+    }
+
+    clickedOnNode(x: number, y: number): false | string {
+
+        let result: false | string = false
+
+        this.nodes.forEach(node => {
+            if (x > node.posX - this.nodeRadius && x < node.posX + this.nodeRadius
+                && y > node.posY - this.nodeRadius && y < node.posY + this.nodeRadius) {
+                console.log("clicked")
+                result = node.name
+            }
+        })
+
+        return result
     }
 
     drawNodes(ctx: CanvasRenderingContext2D) {
@@ -33,7 +51,7 @@ export class Graph {
 
         this.nodes.forEach(node => {
             ctx.beginPath();
-            ctx.arc(node.posX, node.posY, 25, 0, 2 * Math.PI);
+            ctx.arc(node.posX, node.posY, this.nodeRadius, 0, 2 * Math.PI);
             ctx.fillStyle = "#451A03"
             ctx.fill();
             ctx.stroke()
@@ -50,10 +68,15 @@ export class Graph {
 
     drawEdges(ctx: CanvasRenderingContext2D) {
 
-        ctx.strokeStyle = "#38BDF8"
         ctx.lineWidth = 2
 
         this.edges.forEach(edge => {
+
+            ctx.strokeStyle = "#38BDF8"
+
+            if (edge.isActive) {
+                ctx.strokeStyle = "#DC2626"
+            }
 
             const startNode = this.nodes.filter(node => node.name === edge.from)
             const endNode = this.nodes.filter(node => node.name === edge.to)

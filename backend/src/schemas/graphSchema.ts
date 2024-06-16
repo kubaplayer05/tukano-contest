@@ -1,12 +1,13 @@
 import mongoose, {Model} from "mongoose";
+import PriorityQueue from "priorityqueuejs"
 
-interface INode {
+export interface INode {
     name: string,
     posX: number,
     posY: number,
 }
 
-interface IEdge {
+export interface IEdge {
     from: string,
     to: string,
     weight: number
@@ -26,8 +27,14 @@ interface IDistances {
     }
 }
 
+interface FindShortestPathResponse {
+    value: number,
+    routes: string[],
+    distances: IDistances
+}
+
 interface IGraphMethods {
-    findShortestPath(start: string, end: string): number
+    findShortestPath(start: string, end: string): FindShortestPathResponse
 }
 
 type GraphModel = Model<IGraph, {}, IGraphMethods>
@@ -54,7 +61,7 @@ const graphSchema = new mongoose.Schema<IGraph, GraphModel, IGraphMethods>({
 graphSchema.method("findShortestPath", function (start: string, end: string) {
 
     let distances: IDistances = {}
-    let visited = []
+    let visited = new Set<string>();
 
     this.nodes.forEach(node => {
         distances[node.name] = {
@@ -63,32 +70,44 @@ graphSchema.method("findShortestPath", function (start: string, end: string) {
         }
     })
 
-    let queue = [start]
+    let queue = new PriorityQueue((a: string, b: string) => distances[a].value - distances[b].value);
+    queue.enq(start);
 
-    while (queue.length) {
+    while (!queue.isEmpty()) {
+        const currentNode = queue.deq();
 
-        const currentNode = queue.shift()
-        if (!currentNode) break
+        if (visited.has(currentNode)) continue;
+        visited.add(currentNode);
 
-        const currentDistance = distances[currentNode].value
+        const currentDistance = distances[currentNode].value;
 
-        visited.push(currentNode)
-
-        const edges = this.edges.filter(edge => edge.from === currentNode)
+        const edges = this.edges.filter(edge => edge.from === currentNode);
 
         edges.forEach(edge => {
-            const updatedDistance = currentDistance + edge.weight
-            const nextNode = edge.to
+            const updatedDistance = currentDistance + edge.weight;
+            const nextNode = edge.to;
 
-            if (!visited.includes(nextNode) && updatedDistance < distances[nextNode].value) {
-                distances[nextNode].value = updatedDistance
-                distances[nextNode].prevNode = currentNode
-                queue.push(nextNode)
+            if (updatedDistance < distances[nextNode].value) {
+                distances[nextNode].value = updatedDistance;
+                distances[nextNode].prevNode = currentNode;
+                queue.enq(nextNode);
             }
         })
     }
 
-    return distances[end].value
+    let currentNode: string | null = end;
+    let response: FindShortestPathResponse = {
+        value: distances[end].value,
+        distances: distances,
+        routes: [],
+    }
+
+    while (currentNode) {
+        response.routes.unshift(currentNode);
+        currentNode = distances[currentNode].prevNode;
+    }
+
+    return response;
 })
 
 export const Graph = mongoose.model("Graph", graphSchema)
