@@ -8,6 +8,11 @@ import {useMutation} from "@tanstack/react-query";
 import {loginHandler} from "@/lib/api/loginHandler";
 import Link from "next/link";
 import {registerHandler} from "@/lib/api/registerHandler";
+import {BeatLoader} from "react-spinners";
+import {useToast} from "@/components/ui/use-toast";
+import {useRouter} from "next/navigation";
+import {useAtom} from "jotai";
+import {authAtom} from "@/atoms/authAtom";
 
 interface Inputs {
     username: string,
@@ -18,17 +23,38 @@ interface AuthFormProps {
     type: "login" | "register"
 }
 
-export default function AuthForm({type} : AuthFormProps) {
+export default function AuthForm({type}: AuthFormProps) {
+
+    const [, setUsername] = useAtom(authAtom)
 
     const {register, handleSubmit} = useForm<Inputs>()
+    const {toast, dismiss} = useToast()
+    const router = useRouter()
+
 
     const mutation = useMutation({
-        mutationFn: type === "login" ? loginHandler : registerHandler
+        mutationFn: type === "login" ? loginHandler : registerHandler,
+        onSuccess: (res) => {
+            setUsername(res.data.user.username)
+
+            toast({
+                title: "Successfully authenticated",
+                description: "You will, be redirected to graph creator",
+                className: "bg-teal-900 text-white shadow-md",
+            })
+
+            setTimeout(() => {
+                dismiss()
+                router.push("/")
+            }, 3000)
+        }
     })
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         mutation.mutate(data)
     }
+
+    const disabled = mutation.isPending
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}
@@ -48,11 +74,17 @@ export default function AuthForm({type} : AuthFormProps) {
                        className="text-white border-4 border-teal-600 bg-teal-800 placeholder:text-gray-300"
                        {...register("password", {required: true})}/>
             </div>
-            <Button className="bg-teal-600 hover:bg-teal-700 my-4 font-semibold shadow-md">Submit</Button>
+            <Button disabled={disabled} className="bg-teal-600 hover:bg-teal-700 my-4 font-semibold shadow-md">
+                {mutation.isPending ? <BeatLoader color="#FFF"/> : "Submit"}
+            </Button>
             {type === "login" &&
-                <p className="text-center">Do not have a account? <Link href="/register" className="text-blue-500 font-bold">Create one!</Link></p>}
+                <p className="text-center">Do not have a account? <Link href="/register"
+                                                                        className="text-blue-500 font-bold">Create
+                    one!</Link></p>}
             {type === "register" &&
-                <p className="text-center">Already have an account? <Link href="/login" className="text-blue-500 font-bold">Log in!</Link></p>}
+                <p className="text-center">Already have an account? <Link href="/login"
+                                                                          className="text-blue-500 font-bold">Log
+                    in!</Link></p>}
         </form>
     )
 }

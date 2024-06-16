@@ -60,6 +60,8 @@ export async function loginController(req: Request, res: Response) {
             httpOnly: true
         })
 
+        res.cookie("user", JSON.stringify({username: user.username}), {httpOnly: false})
+
         return res.status(200).json({
             "user": user
         })

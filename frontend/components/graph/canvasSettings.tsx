@@ -4,6 +4,7 @@ import {useAtom} from "jotai";
 import {SelectedAction, selectedActionAtom} from "@/atoms/canvasAtom";
 import {Button} from "@/components/ui/button";
 import {Dispatch, SetStateAction} from "react";
+import {authAtom} from "@/atoms/authAtom";
 
 interface CanvasSettingsProps {
     setOpen: Dispatch<SetStateAction<boolean>>
@@ -12,6 +13,7 @@ interface CanvasSettingsProps {
 export default function CanvasSettings({setOpen}: CanvasSettingsProps) {
 
     const [selectedAction, setSelectedAction] = useAtom(selectedActionAtom)
+    const [username,] = useAtom(authAtom)
 
     return (
         <div className="h-[700px] w-[300px] bg-zinc-800 shadow rounded-lg px-10 py-6">
@@ -31,6 +33,14 @@ export default function CanvasSettings({setOpen}: CanvasSettingsProps) {
                         className={`w-full transition bg-zinc-600 hover:bg-teal-700 hover:opacity-80 
                         ${selectedAction === "AddEdge" ? "bg-teal-700" : ""}`}>
                     Add new Edge
+                </Button>
+                <Button disabled={!username} onClick={() => {
+                    setSelectedAction(SelectedAction.SaveGraph)
+                    setOpen(true)
+                }}
+                        className={`w-full transition bg-zinc-600 disabled:opacity-70 hover:bg-teal-700 hover:opacity-80 
+                        ${selectedAction === "SaveGraph" ? "bg-teal-700" : ""}`}>
+                    Save graph
                 </Button>
             </div>
         </div>

@@ -4,6 +4,7 @@ import {Graph, Node} from "@/lib/graph/graph";
 export enum SelectedAction {
     AddNode = "AddNode",
     AddEdge = "AddEdge",
+    SaveGraph = "SaveGraph"
 }
 
 export const selectedActionAtom = atom<SelectedAction | null>(null)

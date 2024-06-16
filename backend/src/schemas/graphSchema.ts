@@ -1,5 +1,11 @@
 import mongoose, {Model} from "mongoose";
 
+interface INode {
+    name: string,
+    posX: number,
+    posY: number,
+}
+
 interface IEdge {
     from: string,
     to: string,
@@ -7,7 +13,9 @@ interface IEdge {
 }
 
 interface IGraph {
-    nodes: string[],
+    name?: string,
+    createdAt?: string,
+    nodes: INode[],
     edges: IEdge[]
 }
 
@@ -24,6 +32,12 @@ interface IGraphMethods {
 
 type GraphModel = Model<IGraph, {}, IGraphMethods>
 
+const nodeSchema = new mongoose.Schema<INode>({
+    name: {type: String, required: true},
+    posX: {type: Number, required: true},
+    posY: {type: Number, required: true}
+})
+
 const edgeSchema = new mongoose.Schema<IEdge>({
     from: {type: String, required: true},
     to: {type: String, required: true},
@@ -31,7 +45,9 @@ const edgeSchema = new mongoose.Schema<IEdge>({
 })
 
 const graphSchema = new mongoose.Schema<IGraph, GraphModel, IGraphMethods>({
-    nodes: {type: [String], required: true},
+    name: {type: String},
+    createdAt: {type: Date, default: new Date()},
+    nodes: {type: [nodeSchema], required: true},
     edges: {type: [edgeSchema], required: true}
 })
 
@@ -41,8 +57,8 @@ graphSchema.method("findShortestPath", function (start: string, end: string) {
     let visited = []
 
     this.nodes.forEach(node => {
-        distances[node] = {
-            value: node === start ? 0 : Infinity,
+        distances[node.name] = {
+            value: node.name === start ? 0 : Infinity,
             prevNode: null,
         }
     })

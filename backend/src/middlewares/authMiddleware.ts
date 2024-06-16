@@ -1,11 +1,11 @@
 import {Request, Response, NextFunction} from "express";
 import jwt from "jsonwebtoken";
-import {IUser, User} from "../schemas/userSchema";
+import {User} from "../schemas/userSchema";
 
 declare global {
     namespace Express {
         interface Request {
-            user: IUser
+            user: string
         }
     }
 }
@@ -43,7 +43,7 @@ export default async function authMiddleware(req: Request, res: Response, next: 
                 })
             }
 
-            req.user = result
+            req.user = result._id.toString()
             next()
         }
 

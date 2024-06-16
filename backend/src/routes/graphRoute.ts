@@ -1,5 +1,5 @@
 import express from "express"
-import {findShortestPathController} from "../controllers/graphController";
+import {findShortestPathController, getAllGraphsController, saveGraphController} from "../controllers/graphController";
 import authMiddleware from "../middlewares/authMiddleware";
 
 const router = express.Router()
@@ -8,8 +8,7 @@ router.post("/find-shortest-path", findShortestPathController)
 
 router.use(authMiddleware)
 
-router.post("/create", (req, res) => {
-    return res.json({"msg": "ok"})
-})
+router.post("/save", saveGraphController)
+router.get("/get/all", getAllGraphsController)
 
 export default router
