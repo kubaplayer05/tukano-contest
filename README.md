@@ -13,7 +13,7 @@ cd tukano-contest
 ### Kopiujemy plik.env w głównym folderze projektu
 ```
 cp .env.example .env 
-cp .env ./backend.env
+cp .env ./backend/.env
 ```
 
 ### Uruchamiamy bazę danych (mongodb)
@@ -25,18 +25,16 @@ docker-compose up
 ```
 cd ./backend 
 npm install
-npm build 
-npm start
-cd ..
+npm run build 
+npm run start
 ```
 
 ### Uruchamiamy frontend aplikacji
 ```
 cd ./frontend
 npm install
-npm build 
-npm start
-cd ..
+npm run build 
+npm run start
 ```
 
 Aplikacja znajduję się domyślnie na http://localhost:3000
