@@ -72,7 +72,7 @@ export async function getAllGraphsController(req: Request, res: Response) {
 
 export async function deleteGraphController(req: Request, res: Response) {
 
-    const {graphId} = req.body
+    const {graphId} = req.params
     const id = req.user
 
     try {
@@ -113,7 +113,7 @@ export async function generateUrlFromGraphController(req: Request, res: Response
 
 export async function generateGraphFromUrlController(req: Request, res: Response) {
 
-    const {url} = req.body
+    const {url} = req.params
 
     try {
 
