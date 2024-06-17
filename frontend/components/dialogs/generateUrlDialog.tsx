@@ -22,7 +22,7 @@ export default function GenerateUrlDialog({open, setOpen, graph}: GenerateUrlDia
     const mutation = useMutation({
         mutationFn: generateUrlHandler,
         onSuccess: (res) => {
-            const url = "http://localhost:3001/?q=" + res.data.url
+            const url = "http://localhost:3000/?q=" + res.data.url
             setLink(url)
         }
     })

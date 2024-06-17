@@ -96,6 +96,8 @@ export default function GraphCanvas({setOpenDialog}: GraphCanvasProps) {
     }
 
     return (
+
         <canvas ref={ref} onClick={onClick} className="w-[1200px] h-[700px]"></canvas>
+
     )
 }

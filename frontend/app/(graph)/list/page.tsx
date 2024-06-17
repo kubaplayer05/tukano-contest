@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import GraphList from "@/components/graph/graphList";
 
-export default function Home() {
+export default function HomeList() {
     return (
         <>
             <Header/>

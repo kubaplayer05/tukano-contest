@@ -6,9 +6,9 @@ import graphRoute from "./routes/graphRoute";
 import "./db/index"
 
 const app = express()
-const port = 3000
+const port = 5000
 
-app.use(cors({credentials: true, origin: "http://localhost:3001"}))
+app.use(cors({credentials: true, origin: "http://localhost:3000"}))
 app.use(express.json())
 app.use(cookieParser())
 

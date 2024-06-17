@@ -1,6 +1,6 @@
 import AuthForm from "@/components/forms/authForm";
 
-export default function LoginPage() {
+export default function RegisterPage() {
 
     return (
         <main className="w-full min-h-screen flex justify-center items-center">
