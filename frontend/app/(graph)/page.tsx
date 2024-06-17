@@ -16,8 +16,8 @@ export default function Home() {
     return (
         <>
             <Header/>
-            <main className="flex items-center justify-center py-10 gap-2">
-                <div className="max-w-[1200px] w-[80%] min-w-[280px] h-[700px] bg-teal-950 rounded-lg shadow">
+            <main className="flex flex-col items-center justify-center py-10 gap-2 md:flex-row px-5">
+                <div className="max-w-[1200px] w-[90%] overflow-x-scroll min-w-[280px] h-[700px] bg-teal-950 rounded-lg shadow">
                     <GraphCanvas setOpenDialog={setOpenDialog}/>
                 </div>
                 <CanvasSettings setOpen={setOpenDialog}/>

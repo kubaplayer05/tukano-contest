@@ -13,8 +13,8 @@ export default function Navbar() {
 
     return (
         <nav className="mx-auto w-fit px-8 py-4 bg-teal-900 flex items-center gap-10 rounded-2xl shadow-md">
-            <Link href="/" className={`px-4 py-2 transition rounded-3xl ${pathname === "/" ? activeLinkStyle : ""}`}>Graph Creator</Link>
-            <Link href="/list" className={`px-4 py-2 transition rounded-3xl ${pathname === "/list" ? activeLinkStyle : ""}`}>Graph List</Link>
+            <Link href="/" className={`px-4 py-2 transition rounded-3xl text-center ${pathname === "/" ? activeLinkStyle : ""}`}>Graph Creator</Link>
+            <Link href="/list" className={`px-4 py-2 transition rounded-3xl text-center ${pathname === "/list" ? activeLinkStyle : ""}`}>Graph List</Link>
         </nav>
     )
 }

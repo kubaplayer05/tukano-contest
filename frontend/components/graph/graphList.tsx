@@ -66,15 +66,15 @@ export default function GraphList() {
     }
 
     return (<>
-            <div className="max-w-[1200px] w-[80%] mx-auto bg-zinc-700 rounded-lg shadow-md px-10 py-6">
-                <h2 className="text-2xl">Graphs list</h2>
+            <div className="max-w-[1200px] w-[95%] mx-auto bg-zinc-700 rounded-lg shadow-md px-4 md:px-10 py-6">
+                <h2 className="text-2xl text-center md:text-left">Graphs list</h2>
                 <Separator className="my-2"/>
                 <div className="w-full flex flex-col gap-2 my-6">
-                    <div className="w-full grid grid-cols-5 py-2 px-4 rounded-xl bg-zinc-600 font-semibold">
+                    <div className="w-full grid grid-cols-2 md:grid-cols-5 py-2 px-4 rounded-xl bg-zinc-600 font-semibold">
                         <h3>Name</h3>
-                        <h3>Nodes count</h3>
-                        <h3>Edges count</h3>
-                        <h3>Created at</h3>
+                        <h3 className="hidden md:block">Nodes count</h3>
+                        <h3 className="hidden md:block">Edges count</h3>
+                        <h3 className="hidden md:block">Created at</h3>
                         <h3>Actions</h3>
                     </div>
                     {data?.data.graphs.map((graph: GraphResponse) => {

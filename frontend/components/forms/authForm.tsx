@@ -58,7 +58,7 @@ export default function AuthForm({type}: AuthFormProps) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}
-              className="min-w-[400px] bg-teal-900 px-10 py-14 flex flex-col gap-5 shadow-xl">
+              className="min-w-[320px] bg-teal-900 px-10 mx-5 py-14 flex flex-col gap-5 shadow-xl">
 
             <h2 className="text-center text-2xl mb-4">{type === "login" ? "Welcome Back!" : "Create new Account!"}</h2>
 
@@ -78,13 +78,22 @@ export default function AuthForm({type}: AuthFormProps) {
                 {mutation.isPending ? <BeatLoader color="#FFF"/> : "Submit"}
             </Button>
             {type === "login" &&
-                <p className="text-center">Do not have a account? <Link href="/register"
-                                                                        className="text-blue-500 font-bold">Create
-                    one!</Link></p>}
+                <div className="flex flex-col gap-2 items-center">
+                    <p className="text-center">
+                        Do not have a account? <Link href="/register" className="text-blue-500 font-bold">Create
+                        one!</Link>
+                    </p>
+                    <Link href="/" className="text-blue-400 text-sm text-center"> Go back to home</Link>
+                </div>}
             {type === "register" &&
-                <p className="text-center">Already have an account? <Link href="/login"
-                                                                          className="text-blue-500 font-bold">Log
-                    in!</Link></p>}
+                <div className="flex flex-col gap-2 items-center">
+                    <p className="text-center">Already have an account? <Link href="/login"
+                                                                              className="text-blue-500 font-bold">Log
+                        in!</Link></p>
+                    <Link href="/" className="text-blue-400 text-sm text-center"> Go back to home</Link>
+                </div>}
+
+
         </form>
     )
 }

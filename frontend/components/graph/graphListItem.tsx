@@ -40,16 +40,16 @@ export default function GraphListItem({graph, setGraphItem, setOpenDialog}: Grap
     }
 
     return (
-        <div className="w-full grid grid-cols-5 py-2 px-4 rounded-xl bg-zinc-600 items-center">
+        <div className="w-full grid grid-cols-2 md:grid-cols-5 py-2 px-4 rounded-xl bg-zinc-600 items-center">
             <h3>{graph.name}</h3>
-            <p>{graph.nodes.length}</p>
-            <p>{graph.edges.length}</p>
-            <p>{formattedDate}</p>
+            <p className="hidden md:inline-block">{graph.nodes.length}</p>
+            <p className="hidden md:inline-block">{graph.edges.length}</p>
+            <p className="hidden md:inline-block">{formattedDate}</p>
             <div className="flex gap-4">
                 <Tooltip>
                     <TooltipTrigger>
                         <Button onClick={loadGraph}
-                                className="px-4 py-2 bg-zinc-500 hover:bg-zinc-700"><FaPlay/></Button>
+                                className="text-sm px-3 py-1 md:px-4 md:py-2 md:text-md bg-zinc-500 hover:bg-zinc-700"><FaPlay/></Button>
                     </TooltipTrigger>
                     <TooltipContent className="bg-zinc-800 text-white">
                         <p>Load graph</p>
@@ -58,7 +58,7 @@ export default function GraphListItem({graph, setGraphItem, setOpenDialog}: Grap
 
                 <Tooltip>
                     <TooltipTrigger>
-                        <Button onClick={deleteGraph} className="px-4 py-2 bg-zinc-500 hover:bg-zinc-700"><FaTrashAlt/></Button>
+                        <Button onClick={deleteGraph} className="text-sm px-3 py-1 md:px-4 md:py-2 md:text-md bg-zinc-500 hover:bg-zinc-700"><FaTrashAlt/></Button>
                     </TooltipTrigger>
                     <TooltipContent className="bg-zinc-800 text-white">
                         <p>Delete graph</p>
@@ -67,7 +67,7 @@ export default function GraphListItem({graph, setGraphItem, setOpenDialog}: Grap
 
                 <Tooltip>
                     <TooltipTrigger>
-                        <Button onClick={shareGraph} className="px-4 py-2 bg-zinc-500 hover:bg-zinc-700"><FaShare/></Button>
+                        <Button onClick={shareGraph} className="text-sm px-3 py-1 md:px-4 md:py-2 md:text-md bg-zinc-500 hover:bg-zinc-700"><FaShare/></Button>
                     </TooltipTrigger>
                     <TooltipContent className="bg-zinc-800 text-white">
                         <p>Generate link</p>
